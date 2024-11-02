@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket</title>
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+        text-align: center;
+        background-image: url("https://wallpapers.com/images/featured-full/cricket-ground-9yo8w016faiow66m.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .btn {
+        margin: 0 10px;
+        padding: 5px;
+        font-size: 20px;
+      }
+      .container {
+        height: 450px;
+        width: 450px;
+        background-color: rgba(218, 197, 197, 0.255);
+        border-radius: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Bat Ball Stump Game</h1>
+      <!-- Bat -->
+      <button
+        class="btn"
+        onclick="
+    let cumputerChoice = Math.random() * 3;
+    let result;
+    if(cumputerChoice > 0 && cumputerChoice < 1) {
+      cumputerChoice = 'Bat';
+    }
+    else if(cumputerChoice > 1 && cumputerChoice <2){
+      cumputerChoice = 'Ball';    }
+    else{
+      cumputerChoice = 'Stump';
+    }
+    
+    //result
+    if(cumputerChoice === 'Bat'){
+      result = 'Result Tie';
+    }
+    else if(cumputerChoice === 'Ball'){
+      result = 'You Won';
+    }
+    else{
+      result = 'Cumputer Won';
+    }
+    
+    alert(`You select : Bat \n Computer select : ${cumputerChoice} \n Result : ${result}`);
+    
+    "
+      >
+        Bat
+      </button>
+
+      <!-- ball -->
+      <button
+        class="btn"
+        onclick="
+    cumputerChoice = Math.random() * 3;
+    // let result;
+    if(cumputerChoice > 0 && cumputerChoice < 1) {
+      cumputerChoice = 'Bat';
+    }
+    else if(cumputerChoice > 1 && cumputerChoice <2){
+      cumputerChoice = 'Ball';    }
+      else{
+        cumputerChoice = 'Stump';
+      }
+    
+    //result
+    if(cumputerChoice === 'Bat'){
+      result = 'Cumputer Won';
+    }
+    else if(cumputerChoice === 'Ball'){
+      result = 'Result Tie';
+    }
+    else{
+      result = 'You Won';
+    }
+    
+    alert(`You select : Ball \n Computer select : ${cumputerChoice} \n Result : ${result}`);
+    
+    "
+      >
+        Ball
+      </button>
+
+      <!-- stump -->
+      <button
+        class="btn"
+        onclick="
+    cumputerChoice = Math.random() * 3;
+    // let result;
+    if(cumputerChoice > 0 && cumputerChoice < 1) {
+      cumputerChoice = 'Bat';
+    }
+    else if(cumputerChoice > 1 && cumputerChoice <2){
+      cumputerChoice = 'Ball';    }
+      else{
+        cumputerChoice = 'Stump';
+      }
+    
+      //result
+      if(cumputerChoice === 'Bat'){
+        result = 'You Won';
+    }
+    else if(cumputerChoice === 'Ball'){
+      result = 'Cumputer Won';
+    }
+    else{
+      result = 'Result Tie';
+    }
+    
+    alert(`You select : Stump \n Computer select : ${cumputerChoice} \n Result : ${result}`);
+    
+    "
+      >
+        Stump
+      </button>
+    </div>
+  </body>
+</html>
