@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usman Ali: Enemy Encounter</title>
+    <style>
+        body { margin: 0; overflow: hidden; background: #87CEEB; }
+        canvas { display: block; margin: auto; background: #fff; border: 1px solid #000; }
+        #score { position: absolute; top: 10px; left: 10px; font-size: 20px; }
+        #playerName { position: absolute; top: 10px; right: 10px; font-size: 20px; }
+        #gameOver { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 40px; display: none; }
+    </style>
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <div id="playerName">Hero: Usman Ali</div>
+    <div id="gameOver">Game Over!</div>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('score');
+        const gameOverDisplay = document.getElementById('gameOver');
+
+        const players = [
+            { name: "Usman Ali", x: canvas.width / 2 - 25, y: canvas.height - 50, width: 50, height: 50, speed: 5 },
+            { name: "Akbar Khan", x: canvas.width / 2 - 25, y: canvas.height - 150, width: 50, height: 50, speed: 5 } // Second hero
+        ];
+        
+        const bullets = [];
+        const enemies = [];
+        let enemySpeed = 1;
+        let score = 0;
+        let gameOver = false;
+        let currentPlayerIndex = 0; // Index to switch between heroes
+
+        // Updated villain names
+        const enemyNames = [
+            'Shadow Reaper',
+            'Crimson Serpent',
+            'Viper',
+            'Nightmare Wraith',
+            'Dread Lord',
+            'Ravenous Beast',
+            'The Enforcer',
+            'Suleman',
+            'Venomous Phantom',
+            'Ironclad Terror',
+            'The Abyss',
+            'Mujtaba'
+        ];
+
+        window.addEventListener('keydown', (e) => {
+            if (gameOver) return;
+            if (e.key === 'ArrowLeft' && players[currentPlayerIndex].x > 0) {
+                players[currentPlayerIndex].x -= players[currentPlayerIndex].speed;
+            } else if (e.key === 'ArrowRight' && players[currentPlayerIndex].x < canvas.width - players[currentPlayerIndex].width) {
+                players[currentPlayerIndex].x += players[currentPlayerIndex].speed;
+            } else if (e.key === ' ') {
+                shoot();
+            } else if (e.key === 'Tab') {
+                currentPlayerIndex = (currentPlayerIndex + 1) % players.length; // Switch hero
+            }
+        });
+
+        function shoot() {
+            bullets.push({ x: players[currentPlayerIndex].x + players[currentPlayerIndex].width / 2 - 2.5, y: players[currentPlayerIndex].y, width: 5, height: 10 });
+        }
+
+        function spawnEnemy() {
+            const x = Math.random() * (canvas.width - 50);
+            const name = enemyNames[Math.floor(Math.random() * enemyNames.length)];
+            enemies.push({ x, y: 0, width: 50, height: 50, name });
+        }
+
+        function updateBullets() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                bullets[i].y -= 5;
+                if (bullets[i].y < 0) bullets.splice(i, 1);
+            }
+        }
+
+        function updateEnemies() {
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                enemies[i].y += enemySpeed;
+                if (enemies[i].y > canvas.height) {
+                    gameOver = true;
+                }
+            }
+        }
+
+        function checkCollisions() {
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    if (bullets[i].x < enemies[j].x + enemies[j].width &&
+                        bullets[i].x + bullets[i].width > enemies[j].x &&
+                        bullets[i].y < enemies[j].y + enemies[j].height &&
+                        bullets[i].y + bullets[i].height > enemies[j].y) {
+                        bullets.splice(i, 1);
+                        enemies.splice(j, 1);
+                        score++;
+                        break;
+                    }
+                }
+            }
+        }
+
+        function drawPlayers() {
+            players.forEach(player => {
+                ctx.fillStyle = player.name === "Usman Ali" ? "blue" : "orange"; // Different colors for different heroes
+                ctx.fillRect(player.x, player.y, player.width, player.height);
+            });
+        }
+
+        function drawBullets() {
+            ctx.fillStyle = "red";
+            bullets.forEach(bullet => ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height));
+        }
+
+        function drawEnemies() {
+            enemies.forEach(enemy => {
+                ctx.fillStyle = "green";
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                ctx.fillStyle = "black";
+                ctx.fillText(enemy.name, enemy.x, enemy.y - 5); // Draw the enemy name above the enemy
+            });
+        }
+
+        function gameLoop() {
+            if (gameOver) {
+                gameOverDisplay.style.display = "block";
+                return;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayers();
+            drawBullets();
+            drawEnemies();
+            updateBullets();
+            updateEnemies();
+            checkCollisions();
+
+            scoreDisplay.innerText = "Score: " + score;
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        setInterval(spawnEnemy, 1000);
+        gameLoop();
+    </script>
+</body>
+</html>
