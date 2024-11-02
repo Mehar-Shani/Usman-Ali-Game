@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usman Ali Cricket</title>
+    <style>
+        body { text-align: center; background-color: #87CEEB; font-family: Arial, sans-serif; }
+        #gameArea { border: 1px solid #000; width: 600px; height: 400px; margin: 20px auto; position: relative; overflow: hidden; background-color: #fff; }
+        #ball { width: 30px; height: 30px; background: red; border-radius: 50%; position: absolute; }
+        #batsman { width: 100px; height: 20px; background: blue; position: absolute; bottom: 10px; left: 250px; }
+        #score { font-size: 24px; margin-top: 20px; }
+        #message { font-size: 20px; color: red; }
+    </style>
+</head>
+<body>
+    <h1>Usman Ali Cricket</h1>
+    <div id="score">Score: 0</div>
+    <div id="message"></div>
+    <div id="gameArea">
+        <div id="ball"></div>
+        <div id="batsman"></div>
+    </div>
+    <script>
+        let score = 0;
+        const ball = document.getElementById('ball');
+        const batsman = document.getElementById('batsman');
+        const scoreDisplay = document.getElementById('score');
+        const messageDisplay = document.getElementById('message');
+        let ballSpeed = 3;
+        let gameInterval;
+
+        function startGame() {
+            resetBall();
+            gameInterval = setInterval(() => {
+                moveBall();
+            }, 20);
+        }
+
+        function resetBall() {
+            ball.style.top = '0px';
+            ball.style.left = Math.random() * (gameArea.clientWidth - 30) + 'px';
+        }
+
+        function moveBall() {
+            let ballPos = parseInt(ball.style.top);
+            ballPos += ballSpeed;
+            ball.style.top = ballPos + 'px';
+
+            if (ballPos > gameArea.clientHeight - 30) {
+                clearInterval(gameInterval);
+                messageDisplay.innerText = 'You missed! Game Over!';
+                return;
+            }
+
+            if (isHit()) {
+                score++;
+                scoreDisplay.innerText = 'Score: ' + score;
+                ballSpeed += 0.5; // Increase ball speed
+                resetBall(); // Reset ball position
+            }
+        }
+
+        function isHit() {
+            const ballRect = ball.getBoundingClientRect();
+            const batsmanRect = batsman.getBoundingClientRect();
+            return (
+                ballRect.bottom >= batsmanRect.top &&
+                ballRect.left + ballRect.width >= batsmanRect.left &&
+                ballRect.left <= batsmanRect.left + batsmanRect.width
+            );
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            const gameArea = document.getElementById('gameArea');
+            const batsmanWidth = batsman.clientWidth;
+            const newLeft = e.clientX - gameArea.getBoundingClientRect().left - batsmanWidth / 2;
+            if (newLeft >= 0 && newLeft <= gameArea.clientWidth - batsmanWidth) {
+                batsman.style.left = newLeft + 'px';
+            }
+        });
+
+        startGame();
+    </script>
+</body>
+</html>
