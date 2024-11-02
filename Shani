@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shani</title>
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+            text-align: center;
+            background-image: url("https://wallpapers.com/images/featured-full/cricket-ground-9yo8w016faiow66m.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .btn {
+            margin: 0 10px;
+            padding: 5px;
+            font-size: 20px;
+        }
+        .container {
+            height: 450px;
+            width: 450px;
+            background-color: rgba(218, 197, 197, 0.255);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Usman Ali</h1>
+        <button class="btn" onclick="play('Bat')">Bat</button>
+        <button class="btn" onclick="play('Ball')">Ball</button>
+        <button class="btn" onclick="play('Stump')">Stump</button>
+    </div>
+
+    <script>
+        function play(userChoice) {
+            const computerChoice = Math.floor(Math.random() * 3);
+            let computerSelection;
+            let result;
+
+            if (computerChoice === 0) {
+                computerSelection = 'Bat';
+            } else if (computerChoice === 1) {
+                computerSelection = 'Ball';
+            } else {
+                computerSelection = 'Stump';
+            }
+
+            if (userChoice === computerSelection) {
+                result = 'Result Tie';
+            } else if ((userChoice === 'Bat' && computerSelection === 'Ball') ||
+                       (userChoice === 'Ball' && computerSelection === 'Stump') ||
+                       (userChoice === 'Stump' && computerSelection === 'Bat')) {
+                result = 'You Won';
+            } else {
+                result = 'Computer Won';
+            }
+
+            alert(`You select: ${userChoice} \nComputer select: ${computerSelection} \nResult: ${result}`);
+        }
+    </script>
+</body>
+</html>
